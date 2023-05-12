@@ -1,3 +1,5 @@
+import 'package:boosky/screens/book_shelf.dart';
+import 'package:boosky/screens/categories.dart';
 import 'package:boosky/screens/home.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +35,7 @@ class BooksyApp extends StatefulWidget {
 class _BooksyAppState extends State<BooksyApp> {
   int _selectIndex = 0;
 
-  static List<Widget> pages = [Home(), Text("Library")];
+  static List<Widget> pages = [Home(), const Categories(), BookShelf()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +43,9 @@ class _BooksyAppState extends State<BooksyApp> {
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Inicio"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.library_books), label: "Biblioteca")
+                icon: Icon(Icons.library_books), label: "Biblioteca"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.auto_stories), label: "Mi Estante")
           ],
           currentIndex: _selectIndex,
           onTap: onItemActive,
