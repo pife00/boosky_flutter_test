@@ -1,35 +1,31 @@
+import 'dart:developer';
+
+import 'package:boosky/api/book_service.dart';
+import 'package:boosky/state/book_shelf.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/book.dart';
 
 class BookShelf extends StatelessWidget {
-  BookShelf({super.key});
-
-  final List<Book> books = [
-    Book(
-        1,
-        "Ahri",
-        "Zorra",
-        "demon and slayer in my mind, only just one me and another me why?",
-        "https://storage.googleapis.com/pixa-wall-6dae7.appspot.com/champions_body/ahri.png"),
-    Book(2, "Akali", "Ninja", "Everyone is back again, eveyone dude, Dos veces",
-        "https://storage.googleapis.com/pixa-wall-6dae7.appspot.com/champions_body/akali.png"),
-    Book(3, "Ashe", "Riot Games", "a crazy that need a nerf in her ass",
-        "https://storage.googleapis.com/pixa-wall-6dae7.appspot.com/champions_body/ashe.png")
-  ];
+  const BookShelf({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (books.isEmpty) {
-      return Center(
+    return BlocBuilder<BookShelfBloc, BookShelfState>(
+        builder: ((context, state) {
+      log("${state.booksId}");
+      if (state.booksId.isEmpty) {
+        return Center(
+            child: Text(
+          "Esperando Libros",
+          style: Theme.of(context).textTheme.titleLarge,
+        ));
+      }
+      return Container(
+          margin: const EdgeInsets.all(16),
           child: Text(
-        "Esperando Libros",
-        style: Theme.of(context).textTheme.titleLarge,
-      ));
-    }
-    return Container(
-      margin: const EdgeInsets.all(16),
-      child: GridView.builder(
+              "el id es :${state.booksId}") /* GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 10,
@@ -37,21 +33,46 @@ class BookShelf extends StatelessWidget {
               childAspectRatio: 0.7),
           itemCount: 2,
           itemBuilder: (context, index) {
-            return BookCoverItem(book: books[index]);
-          }),
-    );
+            return BookCoverItem(book: state. books[index]);
+          }), */
+          );
+    }));
   }
 }
 
-class BookCoverItem extends StatelessWidget {
-  final Book book;
-  const BookCoverItem({super.key, required this.book});
+class BookCoverItem extends StatefulWidget {
+  final Book bookId;
+  const BookCoverItem({super.key, required this.bookId});
+
+  @override
+  State<BookCoverItem> createState() => _BookCoverItemState();
+}
+
+class _BookCoverItemState extends State<BookCoverItem> {
+  Book? book;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getBook();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      child: Ink.image(fit: BoxFit.cover, image: NetworkImage(book.imgUrl)),
-    );
+    return book == null
+        ? const Center(child: CircularProgressIndicator())
+        : InkWell(
+            onTap: () {},
+            child:
+                Ink.image(fit: BoxFit.cover, image: NetworkImage(book!.imgUrl)),
+          );
+  }
+
+  void _getBook() async {
+    var bookSingle = await BooksService().getBook(1);
+    setState(() {
+      book = bookSingle;
+    });
   }
 }

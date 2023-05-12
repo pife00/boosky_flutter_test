@@ -1,41 +1,54 @@
+import 'package:boosky/api/book_service.dart';
 import 'package:boosky/screens/book_details.dart';
 import 'package:flutter/material.dart';
 
 import '../models/book.dart';
 
-class Home extends StatelessWidget {
-  Home({super.key});
-  final List<Book> books = [
-    Book(
-        1,
-        "Ahri",
-        "Zorra",
-        "demon and slayer in my mind, only just one me and another me why?",
-        "https://storage.googleapis.com/pixa-wall-6dae7.appspot.com/champions_body/ahri.png"),
-    Book(2, "Akali", "Ninja", "Everyone is back again, eveyone dude, Dos veces",
-        "https://storage.googleapis.com/pixa-wall-6dae7.appspot.com/champions_body/akali.png"),
-    Book(3, "Ashe", "Riot Games", "a crazy that need a nerf in her ass",
-        "https://storage.googleapis.com/pixa-wall-6dae7.appspot.com/champions_body/ashe.png")
-  ];
+class Home extends StatefulWidget {
+  const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  List<Book> books = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getLastBooks();
+  }
+
+  void _getLastBooks() async {
+    var lastBook = await BooksService().getLastBook();
+    setState(() {
+      books = lastBook;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: books.length + 1,
-        itemBuilder: ((context, index) {
-          if (index == 0) {
-            return const Header(
-                imgUrl:
-                    "https://storage.googleapis.com/pixa-wall-6dae7.appspot.com/splash_art/Annie/Annie-Versary_preview.jpg");
-          }
-          return Column(
-            children: [
-              Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: ListCard(book: books[index - 1])),
-            ],
-          );
-        }));
+    return books.isEmpty
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : ListView.builder(
+            itemCount: books.length + 1,
+            itemBuilder: ((context, index) {
+              if (index == 0) {
+                return const Header(
+                    imgUrl:
+                        "https://storage.googleapis.com/pixa-wall-6dae7.appspot.com/splash_art/Annie/Annie-Versary_preview.jpg");
+              }
+              return Column(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: ListCard(book: books[index - 1])),
+                ],
+              );
+            }));
   }
 }
 

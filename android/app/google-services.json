@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "451683984755",
+    "project_id": "boosky-50cf5",
+    "storage_bucket": "boosky-50cf5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451683984755:android:514c5d77b24b117168d106",
+        "android_client_info": {
+          "package_name": "com.example.boosky"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "451683984755-89tr4a1c2nnagsj68p982nn6nv7nq78q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN_wQfVERmDXAoJJ6ItMn5gEPUKBlpXvE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "451683984755-89tr4a1c2nnagsj68p982nn6nv7nq78q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
