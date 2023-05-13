@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:boosky/api/book_service.dart';
 import 'package:boosky/screens/book_details.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,7 @@ class _HomeState extends State<Home> {
 
   void _getLastBooks() async {
     var lastBook = await BooksService().getLastBook();
+
     setState(() {
       books = lastBook;
     });
@@ -29,6 +32,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    log("HOME:$books");
     return books.isEmpty
         ? const Center(
             child: CircularProgressIndicator(),
