@@ -29,6 +29,13 @@
             {
               "client_id": "451683984755-89tr4a1c2nnagsj68p982nn6nv7nq78q.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "451683984755-ingkvibh94ndptgih5h5mkd9079tpgb5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.boosky"
+              }
             }
           ]
         }
