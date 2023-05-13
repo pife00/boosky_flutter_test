@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:boosky/models/book.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -19,16 +17,34 @@ class BooksService {
     });
 
     for (var item in temp) {
-      var book = Book("1", item["name"], item["author"], item["description"],
-          item["imgUrl"]);
+      var book = Book(item['id'], item["name"], item["author"],
+          item["description"], item["imgUrl"]);
       data.add(book);
     }
 
     return Future.value(data);
   }
 
-  Future<Book> getBook(int bookId) async {
-    return Future.delayed(const Duration(seconds: 2))
-        .then((value) => Future.value(books[0]));
+  Future<Book> getBook(String bookId) async {
+    var temp = [];
+    List<Book> data = [];
+    await db
+        .collection("books")
+        .where("id", isEqualTo: bookId)
+        .get()
+        // ignore: avoid_types_as_parameter_names
+        .then((querySnapshot) {
+      for (var element in querySnapshot.docs) {
+        temp.add(element.data());
+      }
+    });
+
+    for (var item in temp) {
+      var book = Book(item['id'], item['name'], item['author'],
+          item['description'], item['imgUrl']);
+      data.add(book);
+    }
+
+    return Future.value(data[0]);
   }
 }
