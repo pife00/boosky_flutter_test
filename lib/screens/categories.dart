@@ -10,7 +10,7 @@ class Categories extends StatelessWidget {
   }
 }
 
-// ignore: use_key_in_widget_constructors
+// ignore: use_key_in_widget_constructors, must_be_immutable
 class BookCategories extends StatelessWidget {
   List<CategoriesBook> categories = [
     CategoriesBook(1, "PROJECT"),
@@ -33,8 +33,10 @@ class BookCategories extends StatelessWidget {
 }
 
 class TileCategory extends StatelessWidget {
+  // ignore: non_constant_identifier_names
   const TileCategory({super.key, required this.BookCategory});
 
+  // ignore: non_constant_identifier_names
   final CategoriesBook BookCategory;
 
   @override

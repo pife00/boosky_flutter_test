@@ -53,7 +53,6 @@ class _BookCoverItemState extends State<BookCoverItem> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _getBook();
   }

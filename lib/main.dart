@@ -40,7 +40,11 @@ class BooksyApp extends StatefulWidget {
 class _BooksyAppState extends State<BooksyApp> {
   int _selectIndex = 0;
 
-  static List<Widget> pages = [Home(), const Categories(), BookShelf()];
+  static List<Widget> pages = [
+    const Home(),
+    const Categories(),
+    const BookShelf()
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
