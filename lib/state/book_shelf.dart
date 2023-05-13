@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookShelfState {
   List<String> booksId = [];
+  String urlBase =
+      "https://storage.googleapis.com/pixa-wall-6dae7.appspot.com/champions_body/";
   BookShelfState(this.booksId);
 }
 

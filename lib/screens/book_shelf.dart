@@ -1,4 +1,5 @@
 import 'package:boosky/api/book_service.dart';
+import 'package:boosky/screens/add_book.dart';
 import 'package:boosky/state/book_shelf.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,10 +16,25 @@ class BookShelf extends StatelessWidget {
         builder: ((context, state) {
       if (state.booksId.isEmpty) {
         return Center(
-            child: Text(
-          "Esperando Libros",
-          style: Theme.of(context).textTheme.titleLarge,
-        ));
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Esperando Libros",
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                  onPressed: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AddBook()))
+                      },
+                  child: const Text("Add Book"))
+            ],
+          ),
+        );
       }
       return Container(
         margin: const EdgeInsets.all(16),
@@ -63,13 +79,17 @@ class _BookCoverItemState extends State<BookCoverItem> {
 
   @override
   Widget build(BuildContext context) {
-    return book == null
-        ? const Center(child: CircularProgressIndicator())
-        : InkWell(
-            onTap: () => openBook(context, book),
-            child:
-                Ink.image(fit: BoxFit.cover, image: NetworkImage(book!.imgUrl)),
-          );
+    return BlocBuilder<BookShelfBloc, BookShelfState>(
+        builder: ((context, state) {
+      return book == null
+          ? const Center(child: CircularProgressIndicator())
+          : InkWell(
+              onTap: () => openBook(context, book),
+              child: Ink.image(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(state.urlBase + book!.imgUrl)),
+            );
+    }));
   }
 
   openBook(BuildContext context, Book? book) {

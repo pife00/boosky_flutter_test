@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:boosky/api/book_service.dart';
 import 'package:boosky/screens/book_details.dart';
+import 'package:boosky/state/book_shelf.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/book.dart';
 
@@ -30,6 +34,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    log("$books");
     return books.isEmpty
         ? const Center(
             child: CircularProgressIndicator(),
@@ -70,42 +75,46 @@ class ListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: SizedBox(
-          height: 150,
-          child: Row(children: [
-            InkWell(
-              onTap: () => openBook(context, book),
-              child: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.network(book.imgUrl)),
-            ),
-            Flexible(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Text(
-                        book.author,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    ),
-                    Text(
-                      book.name,
-                      textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                    Text(
-                      book.description,
-                      textAlign: TextAlign.left,
-                      maxLines: 4,
-                      overflow: TextOverflow.fade,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    )
-                  ]),
-            )
-          ])),
+    return BlocBuilder<BookShelfBloc, BookShelfState>(
+      builder: ((context, state) {
+        return Card(
+          child: SizedBox(
+              height: 150,
+              child: Row(children: [
+                InkWell(
+                  onTap: () => openBook(context, book),
+                  child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Image.network(state.urlBase + book.imgUrl)),
+                ),
+                Flexible(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            book.author,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ),
+                        Text(
+                          book.name,
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        Text(
+                          book.description,
+                          textAlign: TextAlign.left,
+                          maxLines: 4,
+                          overflow: TextOverflow.fade,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        )
+                      ]),
+                )
+              ])),
+        );
+      }),
     );
   }
 }

@@ -10,30 +10,33 @@ class BookDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          Center(
-            child: Container(
-              margin: const EdgeInsets.only(top: 20, bottom: 20),
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 10),
-              ]),
-              child: Image.network(book.imgUrl),
+    return BlocBuilder<BookShelfBloc, BookShelfState>(
+        builder: ((context, state) {
+      return Scaffold(
+        appBar: AppBar(),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            Center(
+              child: Container(
+                margin: const EdgeInsets.only(top: 20, bottom: 20),
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 10),
+                ]),
+                child: Image.network(state.urlBase + book.imgUrl),
+              ),
             ),
-          ),
-          BookInfo(
-              id: book.id,
-              name: book.name,
-              author: book.author,
-              description: book.description)
-        ]),
-      ),
-    );
+            BookInfo(
+                id: book.id,
+                name: book.name,
+                author: book.author,
+                description: book.description)
+          ]),
+        ),
+      );
+    }));
   }
 }
 
