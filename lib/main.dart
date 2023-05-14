@@ -83,6 +83,30 @@ class _BooksyAppState extends State<BooksyApp> {
 
   void initNotification(BuildContext context) async {
     var fcmToken = await FirebaseMessaging.instance.getToken();
+    //print(fcmToken);
+
+    //initLocalNotification();
+    initPushNotification(context);
+  }
+
+  void startReminder() {
+    Future.delayed(const Duration(seconds: 4), () {
+      // _showNotification();
+    });
+  }
+
+  void _showNotification(String title, String body) {
+    const AndroidNotificationDetails androidspecs =
+        AndroidNotificationDetails("channelId", "channelName");
+
+    FlutterLocalNotificationsPlugin notification =
+        FlutterLocalNotificationsPlugin();
+    notification.show(
+        1, title, body, const NotificationDetails(android: androidspecs),
+        payload: "20");
+  }
+
+  void initLocalNotification() async {
     FlutterLocalNotificationsPlugin notification =
         FlutterLocalNotificationsPlugin();
 
@@ -97,20 +121,19 @@ class _BooksyAppState extends State<BooksyApp> {
     startReminder();
   }
 
-  void startReminder() {
-    Future.delayed(const Duration(seconds: 4), () {
-      _showNotification();
-    });
+  void initPushNotification(BuildContext context) {
+    FirebaseMessaging.onMessage.listen(_onRemoteMessage);
+    //FirebaseMessaging.onBackgroundMessage(_onBackgroundMessage);
   }
 
-  void _showNotification() {
-    const AndroidNotificationDetails androidspecs =
-        AndroidNotificationDetails("channelId", "channelName");
+  /* Future<void> _onBackgroundMessage(RemoteMessage message) async {
+    print((message.notification!.body ?? "sin mensaje"));
+  } */
 
-    FlutterLocalNotificationsPlugin notification =
-        FlutterLocalNotificationsPlugin();
-    notification.show(1, "Mensaje de Booksy", "Recuerda Leer las paginas",
-        const NotificationDetails(android: androidspecs),
-        payload: "20");
+  void _onRemoteMessage(RemoteMessage message) {
+    String title = message.notification!.title ?? "Titulo";
+    String body = message.notification!.body ?? "Cuerpo";
+    _showNotification(title, body);
+    // print((message.notification!.body ?? "sin mensaje"));
   }
 }
