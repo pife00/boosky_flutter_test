@@ -34,7 +34,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    log("$books");
     return books.isEmpty
         ? const Center(
             child: CircularProgressIndicator(),

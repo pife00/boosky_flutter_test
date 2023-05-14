@@ -124,6 +124,7 @@ class _AddBookState extends State<AddBook> {
 
   void sendData(
       String name, String author, String description, String url) async {
+    //await BooksService().uploadImage(_image!);
     await BooksService().NewBook(name, author, description, url);
   }
 

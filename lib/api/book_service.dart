@@ -1,10 +1,13 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:boosky/models/book.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 final db = FirebaseFirestore.instance;
-
+final storage =
+    FirebaseStorage.instanceFor(bucket: "gs://boosky-50cf5.appspot.com");
 final List<Book> books = [];
 
 class BooksService {
@@ -30,7 +33,10 @@ class BooksService {
   Future<Book> getBook(String bookId) async {
     var temp = [];
     List<Book> data = [];
-    await db.collection("books").where("id", isEqualTo: bookId).get()
+    await db
+        .collection("books")
+        .where("id", isEqualTo: bookId)
+        .get()
         // ignore: avoid_types_as_parameter_names
         .then((querySnapshot) {
       for (var element in querySnapshot.docs) {
@@ -61,5 +67,11 @@ class BooksService {
         .doc(id)
         .set(document)
         .onError((error, stackTrace) => print("Error writing document: $e"));
+  }
+
+  Future<void> uploadImage(String data) async {
+    File image = File(data);
+    final storageRef =
+        FirebaseStorage.instance.ref("books/mountain.jpg").putFile(image);
   }
 }

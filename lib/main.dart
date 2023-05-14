@@ -2,10 +2,12 @@ import 'package:boosky/screens/book_shelf.dart';
 import 'package:boosky/screens/categories.dart';
 import 'package:boosky/screens/home.dart';
 import 'package:boosky/state/book_shelf.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -54,6 +56,7 @@ class _BooksyAppState extends State<BooksyApp> {
   ];
   @override
   Widget build(BuildContext context) {
+    initNotification(context);
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           items: const [
@@ -76,5 +79,38 @@ class _BooksyAppState extends State<BooksyApp> {
     setState(() {
       _selectIndex = value;
     });
+  }
+
+  void initNotification(BuildContext context) async {
+    var fcmToken = await FirebaseMessaging.instance.getToken();
+    FlutterLocalNotificationsPlugin notification =
+        FlutterLocalNotificationsPlugin();
+
+    AndroidInitializationSettings androidSettings =
+        const AndroidInitializationSettings('icon');
+
+    InitializationSettings initializationSettings =
+        InitializationSettings(android: androidSettings);
+
+    await notification.initialize(initializationSettings);
+
+    startReminder();
+  }
+
+  void startReminder() {
+    Future.delayed(const Duration(seconds: 4), () {
+      _showNotification();
+    });
+  }
+
+  void _showNotification() {
+    const AndroidNotificationDetails androidspecs =
+        AndroidNotificationDetails("channelId", "channelName");
+
+    FlutterLocalNotificationsPlugin notification =
+        FlutterLocalNotificationsPlugin();
+    notification.show(1, "Mensaje de Booksy", "Recuerda Leer las paginas",
+        const NotificationDetails(android: androidspecs),
+        payload: "20");
   }
 }
