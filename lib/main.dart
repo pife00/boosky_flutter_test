@@ -83,7 +83,7 @@ class _BooksyAppState extends State<BooksyApp> {
 
   void initNotification(BuildContext context) async {
     var fcmToken = await FirebaseMessaging.instance.getToken();
-    //print(fcmToken);
+    print(fcmToken);
 
     //initLocalNotification();
     initPushNotification(context);
